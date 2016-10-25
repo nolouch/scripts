@@ -7,3 +7,9 @@ standalone:
 multi:
 	bash ./multi.sh
 
+m_one:
+	bash ./one_with_metic.sh
+
+clean:
+	bash ./clean.sh
+
