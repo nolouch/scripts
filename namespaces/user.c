@@ -15,10 +15,28 @@ char* const child_args[] = {
     NULL
 };
 
+void set_uid_map(pid_t pid, int inside_id, int outside_id, int length) {
+    char path[256];
+    sprintf(path, "/proc/%d/uid_map", getpid());
+    FILE* uid_map = fopen(path, "w");
+    fprintf(uid_map, "%d %d %d", inside_id, outside_id, length);
+    fclose(uid_map);
+}
+
+void set_gid_map(pid_t pid, int inside_id, int outside_id, int length) {
+    char path[256];
+    sprintf(path, "/proc/%d/gid_map", getpid());
+    FILE* gid_map = fopen(path, "w");
+    fprintf(gid_map, "%d %d %d", inside_id, outside_id, length);
+    fclose(gid_map);
+}
+
 int child_main(void* args) {
     printf("在子进程!\n");
     cap_t caps;
-    printf("eUID = %ld; eGID = %ld; ", (long) geteuid(), (long) getegid());
+    set_uid_map(getpid(), 0, 1000, 1);
+    set_gid_map(getpid(), 0, 1000, 1);
+    printf("eUID = %ld; eGID = %ld; ", (long)geteuid(), (long)getegid());
     caps = cap_get_proc();
     printf("capabilities: %s/n", cap_to_text(caps, NULL));
     execv(child_args[0], child_args);
