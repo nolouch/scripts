@@ -1,0 +1,1 @@
+./bin/tikv-server  -I 1 -S raftkv  --pd="192.168.199.141:2379,192.168.199.142:2379,192.168.199.143:2379" --addr="192.168.199.141:20160" -C tikv_config.toml --store=/data/tikv --log-file /tmp/tikv-server.log    &

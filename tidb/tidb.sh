@@ -1,0 +1,1 @@
+./bin/tidb-server --store=tikv  --metrics-addr="192.168.199.141:9091" --metrics-interval=15 --path="192.168.199.141:2379,192.168.199.142:2379,192.168.199.143:2379?cluster=1" -log-file /tmp/tidb-server.log & 
