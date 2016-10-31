@@ -3,10 +3,9 @@ if [ $# != 3 ]; then
     exit 1
 fi
 port=4000
-passwd=""
 oltpSize=$1
 numThreads=$2
 maxTime=$3
-bash ./prepare_read_write.sh ${port} ${passwd} ${oltpSize} ${numThreads} ${maxTime}
-bash ./run_read_write.sh ${port} ${passwd} ${oltpSize} ${numThreads} ${maxTime}
-bash ./clean_read_write.sh ${port} ${passwd} ${oltpSize} ${numThreads} ${maxTime}
+bash ./prepare_read_write.sh ${port} "" ${oltpSize} ${numThreads} ${maxTime}
+bash ./run_read_write.sh ${port} "" ${oltpSize} ${numThreads} ${maxTime}
+bash ./clean_read_write.sh ${port} "" ${oltpSize} ${numThreads} ${maxTime}
