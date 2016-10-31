@@ -11,7 +11,7 @@ sysbench --test=./db/oltp.lua  \
          --mysql-host=127.0.0.1 --mysql-port=${port} --mysql-user=root --mysql-password=${passwd} \
          --mysql-db=test --oltp-tables-count=1 --mysql-table-engine=innodb --oltp-table-size=${oltpSize} \
          --report-interval=60 --max-request=0 \
-         --oltp-read-only=on  --oltp-test-mode=nontrx --num-threads=${numThreads} \
+         --oltp-read-only=on  --oltp-test-mode=nontrx --oltp-nontrx-mode=select --num-threads=${numThreads} \
          --max-time=${maxTime} \
          run
 
