@@ -1,4 +1,4 @@
-if [ $# != 3hj]; then
+if [ $# != 3 ]; then
     echo "Usage: $0 oltp-count-size num-threads max-time"
     exit 1
 fi
