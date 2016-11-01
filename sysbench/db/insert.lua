@@ -1,7 +1,7 @@
 pathtest = string.match(test, "(.*/)")
 
 if pathtest then
-   dofile(pathtest .. "common.lua")
+   dofile(pathtest .. "common_.lua")
 else
    require("common")
 end
