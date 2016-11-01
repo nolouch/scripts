@@ -1,9 +1,9 @@
 pathtest = string.match(test, "(.*/)")
 
 if pathtest then
-   dofile(pathtest .. "common.lua")
+   dofile(pathtest .. "common_.lua")
 else
-   require("common")
+   require("common_")
 end
 
 function thread_init(thread_id)
@@ -50,12 +50,12 @@ function event(thread_id)
       range_start = sb_rand(1, oltp_table_size)
       rs = db_query("SELECT c FROM ".. table_name .." WHERE id BETWEEN " .. range_start .. " AND " .. range_start .. "+" .. oltp_range_size - 1)
    end
-  
+
    for i=1, oltp_sum_ranges do
       range_start = sb_rand(1, oltp_table_size)
       rs = db_query("SELECT SUM(K) FROM ".. table_name .." WHERE id BETWEEN " .. range_start .. " AND " .. range_start .. "+" .. oltp_range_size - 1)
    end
-   
+
    for i=1, oltp_order_ranges do
       range_start = sb_rand(1, oltp_table_size)
       rs = db_query("SELECT c FROM ".. table_name .." WHERE id BETWEEN " .. range_start .. " AND " .. range_start .. "+" .. oltp_range_size - 1 .. " ORDER BY c")
@@ -69,7 +69,7 @@ function event(thread_id)
    end
 
    end
-   
+
    if not oltp_read_only then
 
    for i=1, oltp_index_updates do
@@ -90,7 +90,7 @@ function event(thread_id)
    i = sb_rand(1, oltp_table_size)
 
    rs = db_query("DELETE FROM " .. table_name .. " WHERE id=" .. i)
-   
+
    c_val = sb_rand_str([[
 ###########-###########-###########-###########-###########-###########-###########-###########-###########-###########]])
    pad_val = sb_rand_str([[
