@@ -3,7 +3,7 @@ pathtest = string.match(test, "(.*/)")
 if pathtest then
    dofile(pathtest .. "common.lua")
 else
-   require("common")
+   require("common_")
 end
 
 function thread_init(thread_id)
