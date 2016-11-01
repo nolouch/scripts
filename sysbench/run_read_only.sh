@@ -7,7 +7,11 @@ passwd=$2
 oltpSize=$3
 numThreads=$4
 maxTime=$5
-sysbench --test=./db/select.lua  \
+testLua="./db/select.lua"
+if [ ${port}==4000 ]; then
+    testLua="./db/select_.lua"
+fi
+sysbench --test=${testLua}  \
          --mysql-host=127.0.0.1 --mysql-port=${port} --mysql-user=root --mysql-password=${passwd} \
          --mysql-db=test --oltp-tables-count=1 --mysql-table-engine=innodb --oltp-table-size=${oltpSize} \
          --report-interval=60 --max-requests=1000000000 \
