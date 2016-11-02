@@ -8,7 +8,7 @@ oltpSize=$3
 numThreads=$4
 maxTime=$5
 testLua="./db/update_index.lua"
-if [ ${port}==4000 ]; then
+if [ $port == "4000" ]; then
     testLua="./db/update_index_.lua"
 fi
 sysbench --test=${testLua}  \
