@@ -1,0 +1,37 @@
+#!/usr/bin/expect -f
+spawn ssh q5
+expect "#*"
+send "su pingcap\r"
+send "kill -9 \$(pgrep -f \"tidb-server\")\r"
+send "kill -9 \$(pgrep -f \"pd-server\")\r"
+send "rm -r /data/pd\r"
+send "exit\r"
+send "exit\r"
+expect eof
+
+spawn ssh q2
+expect "#*"
+send "su pingcap\r"
+send "kill -9 \$(pgrep -f \"tikv-server\")\r"
+send "rm -r /data/tikv\r"
+send "exit\r"
+send "exit\r"
+expect eof
+
+spawn ssh q3
+expect "#*"
+send "su pingcap\r"
+send "kill -9 \$(pgrep -f \"tikv-server\")\r"
+send "rm -r /data/tikv\r"
+send "exit\r"
+send "exit\r"
+expect eof
+
+spawn ssh q4
+expect "#*"
+send "su pingcap\r"
+send "kill -9 \$(pgrep -f \"tikv-server\")\r"
+send "rm -r /data/tikv\r"
+send "exit\r"
+send "exit\r"
+expect eof
