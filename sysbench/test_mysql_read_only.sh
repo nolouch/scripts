@@ -1,12 +1,12 @@
-if [ $# != 3 ]; then
-    echo "Usage: $0 oltp-count-size num-threads max-time"
-    exit 1
-fi
+#!/bin/bash
 port=3306
 passwd=000000
-oltpSize=$1
-numThreads=$2
-maxTime=$3
-bash ./prepare_read_only.sh ${port} ${passwd} ${oltpSize} ${numThreads} ${maxTime}
-bash ./run_read_only.sh ${port} ${passwd} ${oltpSize} ${numThreads} ${maxTime}
-bash ./clean_read_only.sh ${port} ${passwd} ${oltpSize} ${numThreads} ${maxTime}
+oltpSize=1000000
+numThreads=100
+maxTime=600
+tableC=1
+bash ./prepare_read_only.sh ${port} ${passwd} ${oltpSize} ${numThreads} ${maxTime} ${tableC}
+bash ./run_read_only.sh ${port} ${passwd} ${oltpSize} ${numThreads} ${maxTime} ${tableC}
+bash ./clean_read_only.sh ${port} ${passwd} ${oltpSize} ${numThreads} ${maxTime} ${tableC}
+
+
