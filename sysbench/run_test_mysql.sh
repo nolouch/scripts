@@ -45,9 +45,9 @@ echo "1000w read write"
 bash ./run_read_write.sh ${port} ${passwd} ${oltpSize} ${numThreads} ${maxTime} ${tableC}
 bash ./clean_read_write.sh ${port} ${passwd} ${oltpSize} ${numThreads} ${maxTime} ${tableC}
 
-oltpSize=3125000
+oltpSize=2500000
 numThreads=100
-tableC=16
+tableC=20
 bash ./prepare_read_only.sh ${port} ${passwd} ${oltpSize} ${numThreads} ${maxTime} ${tableC}
 echo "1000w read only"
 bash ./run_read_only.sh ${port} ${passwd} ${oltpSize} ${numThreads} ${maxTime} ${tableC}
@@ -64,9 +64,9 @@ echo "1000w insert"
 bash ./run_insert.sh ${port} ${passwd} ${oltpSize} ${numThreads} ${maxTime} ${tableC}
 bash ./clean_read_write.sh ${port} ${passwd} ${oltpSize} ${numThreads} ${maxTime} ${tableC}
 
-oltpSize=3125000
+oltpSize=2500000
 numThreads=100
-tableC=32
+tableC=40
 bash ./prepare_read_only.sh ${port} ${passwd} ${oltpSize} ${numThreads} ${maxTime} ${tableC}
 echo "10000w read only"
 bash ./run_read_only.sh ${port} ${passwd} ${oltpSize} ${numThreads} ${maxTime} ${tableC}
