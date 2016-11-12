@@ -1,0 +1,25 @@
+#!/usr/bin/expect -f
+
+spawn ssh q2
+expect "#*"
+send "kill -9 \$(pgrep -f \"tikv-server\")\r"
+send "rm -r /data/tikv\r"
+send "exit\r"
+send "exit\r"
+expect eof
+
+spawn ssh q3
+expect "#*"
+send "kill -9 \$(pgrep -f \"tikv-server\")\r"
+send "rm -r /data/tikv\r"
+send "exit\r"
+send "exit\r"
+expect eof
+
+spawn ssh q4
+expect "#*"
+send "kill -9 \$(pgrep -f \"tikv-server\")\r"
+send "rm -r /data/tikv\r"
+send "exit\r"
+send "exit\r"
+expect eof
