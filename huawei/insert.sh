@@ -8,9 +8,9 @@ port=$1
 startT=$2
 endT=$3
 
-inputfile="test.txt"
 
-cat $inputfile | for ((i = ${startT}; i <= ${endT}; i++))
+
+for ((i = ${startT}; i <= ${endT}; i++))
 do
 echo "INSERT INTO t(a, b, c) VALUES($i, $i, 'pingcap');"
 done | mysql -h 127.0.0.1 -P ${port} -u root -D test;
