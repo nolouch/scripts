@@ -1,3 +1,4 @@
+#!/bin/bash
 if  [ $# != 2 ];  then
     echo "Usage: $0 port count"
     exit 1
