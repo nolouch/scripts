@@ -6,12 +6,11 @@
 # clean tikv
 ./clean_tikv.sh
 
-cd $HOME/work/scripts/sysbench
+# cd $HOME/work/scripts/sysbench
 ./start_pd.sh
 # start tikv
 ./start_tikv.sh
 
 ./start_tidb.sh
-
 
 
