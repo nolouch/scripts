@@ -13,11 +13,9 @@ if [ $port == "4000" ]; then
     testLua="./db/select_.lua"
 fi
 sysbench --test=${testLua}  \
-         --mysql-host=127.0.0.1 --mysql-port=${port} --mysql-user=root --mysql-password=${passwd} \
+         --mysql-host=$MYSQL_HOST --mysql-port=${port} --mysql-user=root --mysql-password=${passwd} \
          --mysql-db=test --oltp-tables-count=${tableC} --mysql-table-engine=innodb --oltp-table-size=${oltpSize} \
          --report-interval=60 --max-requests=1000000000 \
          --oltp-read-only=on  --oltp-test-mode=nontrx --oltp-nontrx-mode=select --num-threads=${numThreads} \
          --max-time=${maxTime} \
          cleanup
-
-

@@ -1,5 +1,6 @@
 #!/bin/bash
-port=4000
+export MYSQL_HOST=127.0.0.1
+port=30040
 # test select
 echo "select 16*1000000 64"
 ./prepare_read_only.sh ${port} "" 1000000 64 1200 16 && ./run_read_only.sh ${port} "" 1000000 64 1200 16 && ./reset1.sh
@@ -55,4 +56,3 @@ echo "update 64*1000000 128"
 ./prepare_update.sh ${port} "" 1000000 128 1200 64 && ./run_update.sh ${port} "" 1000000 128 1200 64 && ./reset1.sh
 echo "update 64*1000000 256"
 ./prepare_update.sh ${port} "" 1000000 256 1200 64 && ./run_update.sh ${port} "" 1000000 256 1200 64 && ./reset1.sh
-
