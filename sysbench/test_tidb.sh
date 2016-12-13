@@ -1,5 +1,5 @@
 #!/bin/bash
-export MYSQL_HOST=
+export MYSQL_HOST=127.0.0.1
 port=30040
 # test select
 echo "select 16*1000000 64"
