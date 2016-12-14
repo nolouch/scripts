@@ -20,6 +20,6 @@ read
 
 for id in $(seq 1 $TABLES); do
     echo insert sbtest$id ...
-    $TIDB_IMPORTER -u root -P ${PORT} -h "$MYSQL_HOST" -c 1280 -n SIZE -b 100 -D "${DATABASE}" \
+    $TIDB_IMPORTER -u root -P ${PORT} -h "$MYSQL_HOST" -c 1280 -n $SIZE -b 100 -D "${DATABASE}" \
         -t "create table if not exists sbtest$id(id INTEGER UNSIGNED unique primary key comment '[[step=1]]', k INTEGER, c varchar(120), pad CHAR(60));"
 done
