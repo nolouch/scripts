@@ -1,3 +1,4 @@
+#!/bin/bash
 if [ $# != 6 ]; then
     echo "Usage: $0 port paswd oltp-count-size num-threads max-time"
     exit 1

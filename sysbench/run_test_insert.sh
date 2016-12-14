@@ -1,3 +1,4 @@
+#!/bin/bash
 port=4000
 oltpSize=3125000
 numThreads=128
