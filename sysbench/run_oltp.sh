@@ -10,7 +10,7 @@ numThreads=$4
 maxTime=$5
 tableC=$6
 database=$7
-testLua="./db/update_index.lua"
+testLua="./db/oltp.lua"
 ./sysbench --test=${testLua}  \
          --mysql-host=$MYSQL_HOST --mysql-port=${port} --mysql-user=root --mysql-password=${passwd} \
          --mysql-db=${database} --oltp-tables-count=${tableC} --mysql-table-engine=innodb --oltp-table-size=${oltpSize} \

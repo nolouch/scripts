@@ -10,12 +10,12 @@ numThreads=$4
 maxTime=$5
 tableC=$6
 database=$7
-testLua="./db/update_index.lua"
+testLua="./db/select.lua"
 ./sysbench --test=${testLua}  \
          --mysql-host=$MYSQL_HOST --mysql-port=${port} --mysql-user=root --mysql-password=${passwd} \
          --mysql-db=${database} --oltp-tables-count=${tableC} --mysql-table-engine=innodb --oltp-table-size=${oltpSize} \
          --report-interval=60 --max-requests=1000000000 \
-         --oltp-read-only=off  --oltp-test-mode=nontrx --num-threads=${numThreads} \
+         --oltp-read-only=on  --oltp-test-mode=nontrx --oltp-nontrx-mode=select --num-threads=${numThreads} \
          --max-time=${maxTime} \
          run
 

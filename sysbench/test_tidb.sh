@@ -2,68 +2,86 @@
 export MYSQL_HOST=127.0.0.1
 port=4000
 database="test"
-size=1000000
+table_size=1000000
+max_time=1200
 
-# test select
-echo "select 32*${size} 128"
-./prepare.sh ${port} ${database} ${size}  32
-./run_read_only.sh ${port} "" ${size} 128 1200 32
+# select test
+echo "select 32*${table_size} 128"
+./prepare.sh ${port} ${database} ${table_size}  32
+./run_select.sh ${port} "" ${table_size} 128 ${max_time} 32 ${database}
 sleep 60
-echo "select 32*${size} 256"
-./run_read_only.sh ${port} "" ${size} 256 1200 32
+echo "select 32*${table_size} 256"
+./run_select.sh ${port} "" ${table_size} 256 ${max_time} 32 ${database}
 sleep 60
-echo "select 32*${size} 612"
-./run_read_only.sh ${port} "" ${size} 612 1200 32
-./reset1.sh
-echo "select 64*${size} 128"
-./prepare.sh ${port} ${database} ${size}  64
-./run_read_only.sh ${port} "" ${size} 128 1200 64
+echo "select 32*${table_size} 512"
+./run_select.sh ${port} "" ${table_size} 512 ${max_time} 32 ${database}
+./reset_tidb.sh.sh
+echo "select 64*${table_size} 128"
+./prepare.sh ${port} ${database} ${table_size}  64
+./run_select.sh ${port} "" ${table_size} 128 ${max_time} 64 ${database}
 sleep 60
-echo "select 64*${size} 256"
-./run_read_only.sh ${port} "" ${size} 256 1200 64
+echo "select 64*${table_size} 256"
+./run_select.sh ${port} "" ${table_size} 256 ${max_time} 64 ${database}
 sleep 60
-echo "select 64*${size} 612"
-./run_read_only.sh ${port} "" ${size} 612 1200 64
-./reset1.sh
+echo "select 64*${table_size} 512"
+./run_select.sh ${port} "" ${table_size} 512 ${max_time} 64 ${database}
+./reset_tidb.sh.sh
 
-# test insert
-echo "insert 32*${size} 128"
-./prepare.sh ${port} ${database} ${size}  32 && ./run_insert.sh ${port} "" ${size} 128 1200 32 && ./reset1.sh
-echo "insert 32*${size} 256"
-./prepare.sh ${port} ${database} ${size}  32 && ./run_insert.sh ${port} "" ${size} 256 1200 32 && ./reset1.sh
-echo "insert 32*${size} 612"
-./prepare.sh ${port} ${database} ${size}  32 && ./run_insert.sh ${port} "" ${size} 612 1200 32 && ./reset1.sh
-echo "insert 64*${size} 128"
-./prepare.sh ${port} ${database} ${size}  64 && ./run_insert.sh ${port} "" ${size} 128 1200 64 && ./reset1.sh
-echo "insert 64*${size} 256"
-./prepare.sh ${port} ${database} ${size}  64 && ./run_insert.sh ${port} "" ${size} 256 1200 64 && ./reset1.sh
-echo "insert 64*${size} 612"
-./prepare.sh ${port} ${database} ${size}  64 && ./run_insert.sh ${port} "" ${size} 612 1200 64 && ./reset1.sh
+# insert test
+echo "insert 32*${table_size} 128"
+./prepare.sh ${port} ${database} ${table_size}  32 && ./run_insert.sh ${port} "" ${table_size} 128 ${max_time} 32 ${database} && ./reset_tidb.sh.sh
+sleep 60
+echo "insert 32*${table_size} 256"
+./prepare.sh ${port} ${database} ${table_size}  32 && ./run_insert.sh ${port} "" ${table_size} 256 ${max_time} 32 ${database} && ./reset_tidb.sh.sh
+sleep 60
+echo "insert 32*${table_size} 512"
+./prepare.sh ${port} ${database} ${table_size}  32 && ./run_insert.sh ${port} "" ${table_size} 512 ${max_time} 32 ${database} && ./reset_tidb.sh.sh
+sleep 60
+echo "insert 64*${table_size} 128"
+./prepare.sh ${port} ${database} ${table_size}  64 && ./run_insert.sh ${port} "" ${table_size} 128 ${max_time} 64 ${database} && ./reset_tidb.sh.sh
+sleep 60
+echo "insert 64*${table_size} 256"
+./prepare.sh ${port} ${database} ${table_size}  64 && ./run_insert.sh ${port} "" ${table_size} 256 ${max_time} 64 ${database} && ./reset_tidb.sh.sh
+sleep 60
+echo "insert 64*${table_size} 512"
+./prepare.sh ${port} ${database} ${table_size}  64 && ./run_insert.sh ${port} "" ${table_size} 512 ${max_time} 64 ${database} && ./reset_tidb.sh.sh
+sleep 60
 
-# test read_write
-echo "read_write 32*${size} 128"
-./prepare.sh ${port} ${database} ${size}  32 && ./run_read_write.sh ${port} "" ${size} 128 1200 32 && ./reset1.sh
-echo "read_write 32*${size} 256"
-./prepare.sh ${port} ${database} ${size}  32 && ./run_read_write.sh ${port} "" ${size} 256 1200 32 && ./reset1.sh
-echo "read_write 32*${size} 612"
-./prepare.sh ${port} ${database} ${size}  32 && ./run_read_write.sh ${port} "" ${size} 612 1200 32 && ./reset1.sh
-echo "read_write 64*${size} 128"
-./prepare.sh ${port} ${database} ${size}  64 && ./run_read_write.sh ${port} "" ${size} 128 1200 64 && ./reset1.sh
-echo "read_write 64*${size} 256"
-./prepare.sh ${port} ${database} ${size}  64 && ./run_read_write.sh ${port} "" ${size} 256 1200 64 && ./reset1.sh
-echo "read_write 64*${size} 612"
-./prepare.sh ${port} ${database} ${size}  64 && ./run_read_write.sh ${port} "" ${size} 612 1200 64 && ./reset1.sh
+# oltp test
+echo "oltp 32*${table_size} 128"
+./prepare.sh ${port} ${database} ${table_size}  32 && ./run_oltp.sh ${port} "" ${table_size} 128 ${max_time} 32 ${database} && ./reset_tidb.sh.sh
+sleep 60
+echo "oltp 32*${table_size} 256"
+./prepare.sh ${port} ${database} ${table_size}  32 && ./run_oltp.sh ${port} "" ${table_size} 256 ${max_time} 32 ${database} && ./reset_tidb.sh.sh
+sleep 60
+echo "oltp 32*${table_size} 512"
+./prepare.sh ${port} ${database} ${table_size}  32 && ./run_oltp.sh ${port} "" ${table_size} 512 ${max_time} 32 ${database} && ./reset_tidb.sh.sh
+sleep 60
+echo "oltp 64*${table_size} 128"
+./prepare.sh ${port} ${database} ${table_size}  64 && ./run_oltp.sh ${port} "" ${table_size} 128 ${max_time} 64 ${database} && ./reset_tidb.sh.sh
+sleep 60
+echo "oltp 64*${table_size} 256"
+./prepare.sh ${port} ${database} ${table_size}  64 && ./run_oltp.sh ${port} "" ${table_size} 256 ${max_time} 64 ${database} && ./reset_tidb.sh.sh
+sleep 60
+echo "oltp 64*${table_size} 512"
+./prepare.sh ${port} ${database} ${table_size}  64 && ./run_oltp.sh ${port} "" ${table_size} 512 ${max_time} 64 ${database} && ./reset_tidb.sh.sh
+sleep 60
 
-# test update
-echo "update 32*${size} 128"
-./prepare.sh ${port} ${database} ${size}  32 && ./run_update.sh ${port} "" ${size} 128 1200 32 && ./reset1.sh
-echo "update 32*${size} 256"
-./prepare.sh ${port} ${database} ${size}  32 && ./run_update.sh ${port} "" ${size} 256 1200 32 && ./reset1.sh
-echo "update 32*${size} 512"
-./prepare.sh ${port} ${database} ${size}  32 && ./run_update.sh ${port} "" ${size} 612 1200 32 && ./reset1.sh
-echo "update 64*${size} 128"
-./prepare.sh ${port} ${database} ${size}  64 && ./run_update.sh ${port} "" ${size} 128 1200 64 && ./reset1.sh
-echo "update 64*${size} 256"
-./prepare.sh ${port} ${database} ${size}  64 && ./run_update.sh ${port} "" ${size} 256 1200 64 && ./reset1.sh
-echo "update 64*${size} 612"
-./prepare.sh ${port} ${database} ${size}  64 && ./run_update.sh ${port} "" ${size} 612 1200 64 && ./reset1.sh
+# update test
+echo "update 32*${table_size} 128"
+./prepare.sh ${port} ${database} ${table_size}  32 && ./run_update.sh ${port} "" ${table_size} 128 ${max_time} 32 ${database} && ./reset_tidb.sh.sh
+sleep 60
+echo "update 32*${table_size} 256"
+./prepare.sh ${port} ${database} ${table_size}  32 && ./run_update.sh ${port} "" ${table_size} 256 ${max_time} 32 ${database} && ./reset_tidb.sh.sh
+sleep 60
+echo "update 32*${table_size} 512"
+./prepare.sh ${port} ${database} ${table_size}  32 && ./run_update.sh ${port} "" ${table_size} 512 ${max_time} 32 ${database} && ./reset_tidb.sh.sh
+sleep 60
+echo "update 64*${table_size} 128"
+./prepare.sh ${port} ${database} ${table_size}  64 && ./run_update.sh ${port} "" ${table_size} 128 ${max_time} 64 ${database} && ./reset_tidb.sh.sh
+sleep 60
+echo "update 64*${table_size} 256"
+./prepare.sh ${port} ${database} ${table_size}  64 && ./run_update.sh ${port} "" ${table_size} 256 ${max_time} 64 ${database} && ./reset_tidb.sh.sh
+sleep 60
+echo "update 64*${table_size} 512"
+./prepare.sh ${port} ${database} ${table_size}  64 && ./run_update.sh ${port} "" ${table_size} 512 ${max_time} 64 ${database} && ./reset_tidb.sh.sh
