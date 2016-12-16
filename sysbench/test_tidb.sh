@@ -1,87 +1,32 @@
 #!/bin/bash
-export MYSQL_HOST=127.0.0.1
+export SYSBENCH=./sysbench
+export IMPORTER=./importer
+script=$(readlink -f $0)
+work_path=`dirname $script`
+host=127.0.0.1
 port=4000
 database="test"
 table_size=1000000
-max_time=1200
+max_time=1800
+result_file=result.out
 
-# select test
-echo "select 32*${table_size} 128"
-./prepare.sh ${port} ${database} ${table_size}  32
-./run_select.sh ${port} "" ${table_size} 128 ${max_time} 32 ${database}
-sleep 60
-echo "select 32*${table_size} 256"
-./run_select.sh ${port} "" ${table_size} 256 ${max_time} 32 ${database}
-sleep 60
-echo "select 32*${table_size} 512"
-./run_select.sh ${port} "" ${table_size} 512 ${max_time} 32 ${database}
-./reset_tidb.sh.sh
-echo "select 64*${table_size} 128"
-./prepare.sh ${port} ${database} ${table_size}  64
-./run_select.sh ${port} "" ${table_size} 128 ${max_time} 64 ${database}
-sleep 60
-echo "select 64*${table_size} 256"
-./run_select.sh ${port} "" ${table_size} 256 ${max_time} 64 ${database}
-sleep 60
-echo "select 64*${table_size} 512"
-./run_select.sh ${port} "" ${table_size} 512 ${max_time} 64 ${database}
-./reset_tidb.sh
+cd ${work_path}
+test_lua=("./db/select.lua" "./db/insert.lua" "./db/oltp.lua" "./db/update_index.lua")
+table_num=(32 64)
+thread_num=(128 256 512)
+cat /dev/null >  ${result_file}
+for file in ${test_lua[@]}; do
+    for table_count in ${table_num[@]}; do
+        for thread_count in ${thread_num[@]}; do
+            echo -e "\n\n################## ${file} ${table_count}*${table_size} threads: ${thread_count} ###################\n"
+            echo "prepare data......"
+            ./prepare.sh ${host} ${port} ${database} ${table_size} ${table_count}
+            echo "running sysbench test......"
+            ./common.sh ${host} ${port} "" ${database} ${table_count} ${table_size} ${thread_count} ${max_time} ${file} >> ${result_file}
+            echo "clean data......"
+            ./reset_tidb.sh
+            sleep 10
+        done
+    done
+done
 
-# insert test
-echo "insert 32*${table_size} 128"
-./prepare.sh ${port} ${database} ${table_size}  32 && ./run_insert.sh ${port} "" ${table_size} 128 ${max_time} 32 ${database} && ./reset_tidb.sh
-sleep 60
-echo "insert 32*${table_size} 256"
-./prepare.sh ${port} ${database} ${table_size}  32 && ./run_insert.sh ${port} "" ${table_size} 256 ${max_time} 32 ${database} && ./reset_tidb.sh
-sleep 60
-echo "insert 32*${table_size} 512"
-./prepare.sh ${port} ${database} ${table_size}  32 && ./run_insert.sh ${port} "" ${table_size} 512 ${max_time} 32 ${database} && ./reset_tidb.sh
-sleep 60
-echo "insert 64*${table_size} 128"
-./prepare.sh ${port} ${database} ${table_size}  64 && ./run_insert.sh ${port} "" ${table_size} 128 ${max_time} 64 ${database} && ./reset_tidb.sh
-sleep 60
-echo "insert 64*${table_size} 256"
-./prepare.sh ${port} ${database} ${table_size}  64 && ./run_insert.sh ${port} "" ${table_size} 256 ${max_time} 64 ${database} && ./reset_tidb.sh
-sleep 60
-echo "insert 64*${table_size} 512"
-./prepare.sh ${port} ${database} ${table_size}  64 && ./run_insert.sh ${port} "" ${table_size} 512 ${max_time} 64 ${database} && ./reset_tidb.sh
-sleep 60
-
-# oltp test
-echo "oltp 32*${table_size} 128"
-./prepare.sh ${port} ${database} ${table_size}  32 && ./run_oltp.sh ${port} "" ${table_size} 128 ${max_time} 32 ${database} && ./reset_tidb.sh
-sleep 60
-echo "oltp 32*${table_size} 256"
-./prepare.sh ${port} ${database} ${table_size}  32 && ./run_oltp.sh ${port} "" ${table_size} 256 ${max_time} 32 ${database} && ./reset_tidb.sh
-sleep 60
-echo "oltp 32*${table_size} 512"
-./prepare.sh ${port} ${database} ${table_size}  32 && ./run_oltp.sh ${port} "" ${table_size} 512 ${max_time} 32 ${database} && ./reset_tidb.sh
-sleep 60
-echo "oltp 64*${table_size} 128"
-./prepare.sh ${port} ${database} ${table_size}  64 && ./run_oltp.sh ${port} "" ${table_size} 128 ${max_time} 64 ${database} && ./reset_tidb.sh
-sleep 60
-echo "oltp 64*${table_size} 256"
-./prepare.sh ${port} ${database} ${table_size}  64 && ./run_oltp.sh ${port} "" ${table_size} 256 ${max_time} 64 ${database} && ./reset_tidb.sh
-sleep 60
-echo "oltp 64*${table_size} 512"
-./prepare.sh ${port} ${database} ${table_size}  64 && ./run_oltp.sh ${port} "" ${table_size} 512 ${max_time} 64 ${database} && ./reset_tidb.sh
-sleep 60
-
-# update test
-echo "update 32*${table_size} 128"
-./prepare.sh ${port} ${database} ${table_size}  32 && ./run_update.sh ${port} "" ${table_size} 128 ${max_time} 32 ${database} && ./reset_tidb.sh
-sleep 60
-echo "update 32*${table_size} 256"
-./prepare.sh ${port} ${database} ${table_size}  32 && ./run_update.sh ${port} "" ${table_size} 256 ${max_time} 32 ${database} && ./reset_tidb.sh
-sleep 60
-echo "update 32*${table_size} 512"
-./prepare.sh ${port} ${database} ${table_size}  32 && ./run_update.sh ${port} "" ${table_size} 512 ${max_time} 32 ${database} && ./reset_tidb.sh
-sleep 60
-echo "update 64*${table_size} 128"
-./prepare.sh ${port} ${database} ${table_size}  64 && ./run_update.sh ${port} "" ${table_size} 128 ${max_time} 64 ${database} && ./reset_tidb.sh
-sleep 60
-echo "update 64*${table_size} 256"
-./prepare.sh ${port} ${database} ${table_size}  64 && ./run_update.sh ${port} "" ${table_size} 256 ${max_time} 64 ${database} && ./reset_tidb.sh
-sleep 60
-echo "update 64*${table_size} 512"
-./prepare.sh ${port} ${database} ${table_size}  64 && ./run_update.sh ${port} "" ${table_size} 512 ${max_time} 64 ${database} && ./reset_tidb.sh
