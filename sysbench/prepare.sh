@@ -1,11 +1,11 @@
 #!/bin/bash
 ulimit -n 40960
 
-MYSQL_HOST=$1
-PORT=$2
-DATABASE=$3
-SIZE=$4
-TABLES=$5
+MYSQL_HOST=127.0.0.1
+PORT=4000
+DATABASE=sysbench
+SIZE=1000000
+TABLES=16
 TIDB_IMPORTER=${IMPORTER:-"./importer"}
 
 for id in $(seq 1 $TABLES); do
